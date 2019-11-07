@@ -1,10 +1,3 @@
-const image = ['images/wireless.png', 'images/apple.png', 'images/css.png', 'images/html.png', 'images/instagram.png', 'images/javascript.png', 'images/power.png', 'images/symbol.png',
-    'images/wireless.png', 'images/apple.png', 'images/css.png', 'images/html.png', 'images/instagram.png', 'images/javascript.png', 'images/power.png', 'images/symbol.png'
-];
-
-var cards = document.querySelectorAll(".memory-image");
-cards = [...cards];
-
 const initialState = {
      frontImage : [],
      flippedSrcs : [],     
@@ -106,7 +99,17 @@ function addPairToFlipped(src) {
 }
 
 function init() {
+    const image = ['images/wireless.png', 'images/apple.png', 'images/css.png', 'images/html.png', 'images/instagram.png', 'images/javascript.png', 'images/power.png', 'images/symbol.png',
+    'images/wireless.png', 'images/apple.png', 'images/css.png', 'images/html.png', 'images/instagram.png', 'images/javascript.png', 'images/power.png', 'images/symbol.png'];
 
+    var cards = $(".memory-image");
+    cards = [...cards];
+
+    cards.forEach((card) => {
+        if (card.firstChild) {
+            card.firstChild.remove()
+        }
+    })
     setInitialState();
 
     cards.forEach((card) => {
