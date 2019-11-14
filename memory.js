@@ -1,68 +1,71 @@
 const initialState = {
-     frontImage : [],
-     flippedSrcs : [],     
-     clickedCard : false,
-     memoryPairs : 8,
-     uncoverCard : 0,
-     result : 0,
-     locked : false,
+    frontImage: [],
+    flippedSrcs: [],
+    clickedCard: false,
+    memoryPairs: 8,
+    uncoverCard: 0,
+    result: 0,
+    locked: false,
 }
 
 let state = {}
 
-function setState(stateChange){
+function setState(stateChange) {
     state = {
         ...state,
         ...stateChange
     }
 }
-function setInitialState(){
+
+function setInitialState() {
     state = {
         ...initialState
     }
 }
 
 function flipCard() {
+
     if (AreTwoCardsFlipped()) {
         this.classList.remove("hidden");
     }
 
     if (state.flippedSrcs.includes(this.src)) return;
 
-    if (this == state.firstCard) {
-        state.firstCard.classList.add('hidden');        
+    if (this === state.firstCard) {
+        state.firstCard.classList.add('hidden');
         setState({
-            firstCard : null,
-            clickedCard : false
+            firstCard: null,
+            clickedCard: false
         })
         return;
     }
-    if (state.clickedCard == false) {
+    if (state.clickedCard === false) {
         setState({
-            firstCard : this,
-            clickedCard : true
+            firstCard: this,
+            clickedCard: true
         })
         return;
     } else if (AreTwoCardsFlipped()) {
         setState({
-            secondCard : this,
-            clickedCard : false,
-            locked : true
+            secondCard: this,
+            clickedCard: false,
+            locked: true
         })
-        
+
     }
     checkCards()
-
 }
 
 function checkCards() {
-    
-    const {firstCard,
-           secondCard} = state
+
+    const {
+        firstCard,
+        secondCard
+    } = state
 
     if (firstCard.src == secondCard.src) {
         setState({
-            locked : false
+            locked: false
         })
         state.uncoverCard++
         addPairToFlipped(firstCard.src);
@@ -72,18 +75,21 @@ function checkCards() {
             firstCard.classList.add('hidden');
             secondCard.classList.add('hidden');
             setState({
-                locked : false
+                locked: false,              
             })
-        }, 200);
+        }, 300);
     }
 
     setTimeout(function () {}, 200);
-    if (state.uncoverCard === state.memoryPairs) 
-    {
-        alert('YOU WIN')
-        $('.play').removeAttr('disabled')      
+    if (state.uncoverCard === state.memoryPairs) {
+        var popup = $(".popup");
+        popup.addClass('visible');
+        $('.play').removeAttr('disabled')
     }
 
+    setState({
+        firstCard: null
+    })
 }
 
 function AreTwoCardsFlipped() {
@@ -94,13 +100,14 @@ function addPairToFlipped(src) {
     const flippedSrcsCopy = [...state.flippedSrcs]
     flippedSrcsCopy.push(src);
     setState({
-        flippedSrcs : flippedSrcsCopy
+        flippedSrcs: flippedSrcsCopy
     })
 }
 
 function init() {
     const image = ['images/wireless.png', 'images/apple.png', 'images/css.png', 'images/html.png', 'images/instagram.png', 'images/javascript.png', 'images/power.png', 'images/symbol.png',
-    'images/wireless.png', 'images/apple.png', 'images/css.png', 'images/html.png', 'images/instagram.png', 'images/javascript.png', 'images/power.png', 'images/symbol.png'];
+        'images/wireless.png', 'images/apple.png', 'images/css.png', 'images/html.png', 'images/instagram.png', 'images/javascript.png', 'images/power.png', 'images/symbol.png'
+    ];
 
     var cards = $(".memory-image");
     cards = [...cards];
@@ -110,6 +117,10 @@ function init() {
             card.firstChild.remove()
         }
     })
+
+    var popup = $(".popup");
+    popup.removeClass('visible');
+
     setInitialState();
 
     cards.forEach((card) => {
@@ -121,15 +132,14 @@ function init() {
         image.splice(position, 1);
     })
 
-    var frontImage = document.querySelectorAll(".front-card");
+    var frontImage = $(".front-card");
     frontImage = [...frontImage];
     frontImage.forEach(image => image.classList.add('hidden'));
     $('.play').attr('disabled', 'disabled');
-   
+
     frontImage.forEach(img => img.addEventListener('click', flipCard));
 }
 
 init()
 
 $('button').on("click", init);
-
