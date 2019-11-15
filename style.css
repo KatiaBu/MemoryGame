@@ -26,8 +26,11 @@ h2 {
         0px 0px 7px rgba(117, 114, 114, 0.4);
 }
 
+
+
 .container,
-.title {
+.title,
+.counter {
     display: flex;
     display: -webkit-box;
     display: -webkit-flex;
@@ -39,6 +42,14 @@ h2 {
     margin-top: 1%;
     margin-left: 15%;
     margin-right: 15%;
+}
+.counter{
+    align-items: left;
+}
+p{
+    font-weight: bold;
+    color: rgb(247, 141, 141);
+    font-size: 1.3em;
 }
 
 .memory-image {

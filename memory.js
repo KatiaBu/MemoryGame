@@ -6,6 +6,7 @@ const initialState = {
     uncoverCard: 0,
     result: 0,
     locked: false,
+    counter: 0
 }
 
 let state = {}
@@ -35,7 +36,7 @@ function flipCard() {
         state.firstCard.classList.add('hidden');
         setState({
             firstCard: null,
-            clickedCard: false
+            clickedCard: false,
         })
         return;
     }
@@ -68,7 +69,9 @@ function checkCards() {
             locked: false
         })
         state.uncoverCard++
+        state.counter++
         addPairToFlipped(firstCard.src);
+        document.querySelector('.counter p').innerHTML =  'Number of views:' + ' ' + state.counter
 
     } else {
         setTimeout(function () {
@@ -76,16 +79,19 @@ function checkCards() {
             secondCard.classList.add('hidden');
             setState({
                 locked: false,              
-            })
+            })           
         }, 300);
+        state.counter++
+        document.querySelector('.counter p').innerHTML =  'Number of views:' + ' ' + state.counter
     }
-
+    
     setTimeout(function () {}, 200);
     if (state.uncoverCard === state.memoryPairs) {
         var popup = $(".popup");
         popup.addClass('visible');
         $('.play').removeAttr('disabled')
     }
+    
 
     setState({
         firstCard: null
