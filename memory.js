@@ -4,7 +4,6 @@ const initialState = {
     clickedCard: false,
     memoryPairs: 8,
     uncoverCard: 0,
-    result: 0,
     locked: false,
     counter: 0
 }
@@ -38,6 +37,7 @@ function flipCard() {
             firstCard: null,
             clickedCard: false,
         })
+        increseAndDisplayCounter()
         return;
     }
     if (state.clickedCard === false) {
@@ -69,29 +69,25 @@ function checkCards() {
             locked: false
         })
         state.uncoverCard++
-        state.counter++
-        addPairToFlipped(firstCard.src);
-        document.querySelector('.counter p').innerHTML =  'Number of views:' + ' ' + state.counter
+            addPairToFlipped(firstCard.src);
+        increseAndDisplayCounter()
 
     } else {
         setTimeout(function () {
             firstCard.classList.add('hidden');
             secondCard.classList.add('hidden');
             setState({
-                locked: false,              
-            })           
+                locked: false,
+            })
         }, 300);
-        state.counter++
-        document.querySelector('.counter p').innerHTML =  'Number of views:' + ' ' + state.counter
+        increseAndDisplayCounter()
     }
-    
+
     setTimeout(function () {}, 200);
     if (state.uncoverCard === state.memoryPairs) {
-        var popup = $(".popup");
-        popup.addClass('visible');
+        $(".popup").addClass('visible');
         $('.play').removeAttr('disabled')
     }
-    
 
     setState({
         firstCard: null
@@ -100,6 +96,11 @@ function checkCards() {
 
 function AreTwoCardsFlipped() {
     return !state.locked;
+}
+
+function increseAndDisplayCounter() {
+    state.counter++
+        document.querySelector('.counter p').innerHTML = 'Number of views:' + ' ' + state.counter
 }
 
 function addPairToFlipped(src) {
@@ -123,9 +124,8 @@ function init() {
             card.firstChild.remove()
         }
     })
-
-    var popup = $(".popup");
-    popup.removeClass('visible');
+    document.querySelector('.counter p').innerHTML = ''
+    $(".popup").removeClass('visible');
 
     setInitialState();
 
